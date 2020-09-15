@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require("./config/mongoose");
+const passportJWT = require("./config/passport-jwt-strategy");
 
 const app = express();
 
