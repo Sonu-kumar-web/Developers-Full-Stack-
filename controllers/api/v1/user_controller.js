@@ -2,9 +2,11 @@ const gravatar = require("gravatar");
 const jwt = require("jsonwebtoken");
 
 const User = require("../../../models/User");
+const Keys = require("../../../config/keys");
 
 // Load Input Validation
 const validateRegisterInput = require("../../../validation/register");
+const validateLoginInput = require("../../../validation/login");
 
 module.exports.registerUser = async function (req, res) {
    try {
@@ -35,6 +37,57 @@ module.exports.registerUser = async function (req, res) {
       });
 
       return res.status(200).json(newUser);
+   } catch (error) {
+      console.log(error);
+      return res.status(500).json({ msg: "Internal Server Error!" });
+   }
+};
+
+// Login a User(Return JWT Token)
+module.exports.loginUser = async function (req, res) {
+   console.log(req.body);
+   try {
+      const { errors, isValid } = validateLoginInput(req.body);
+
+      // Check Validation
+      if (!isValid) {
+         return res.status(400).json(errors);
+      }
+
+      let email = req.body.email;
+      let password = req.body.password;
+
+      //Find the user
+      var foundUser = await User.findOne({ email });
+      if (!foundUser) {
+         errors.email = "User not found";
+         return res.status(404).json(errors);
+      }
+      console.log(foundUser.password);
+
+      let isMatch = await matchPassword(password);
+
+      function matchPassword(password) {
+         if (foundUser.password == password) {
+            return true;
+         }
+         return false;
+      }
+
+      if (!isMatch) {
+         errors.password = "Password incorrect";
+         return res.status(400).json(errors);
+      }
+
+      const jwtPayload = {
+         id: foundUser._id,
+         name: foundUser.name,
+         avatar: foundUser.avatar,
+      };
+      let token = await jwt.sign(jwtPayload, Keys.secretOrKey, {
+         expiresIn: 360000,
+      });
+      return res.status(200).json({ token: "Bearer " + token, msg: "Success" });
    } catch (error) {
       console.log(error);
       return res.status(500).json({ msg: "Internal Server Error!" });

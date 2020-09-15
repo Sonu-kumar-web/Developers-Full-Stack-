@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
-const config = require("config"); // It is config package not config folder
-
-const db = config.get("mongoURI");
+const key = require("./keys");
 
 const connectDB = async () => {
    try {
-      await mongoose.connect(db, {
+      await mongoose.connect(key.mongoURI, {
          useNewUrlParser: true, //To remove warning given by server
          useUnifiedTopology: true, //To remove warning given by server
       });
