@@ -6,6 +6,9 @@ const app = express();
 // Connect Database
 db();
 
+// Initialized Middleware
+app.use(express.json({ extended: false }));
+
 const port = process.env.PORT || 5000;
 
 // Use express routes
