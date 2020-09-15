@@ -79,7 +79,7 @@ module.exports.likePost = (req, res) => {
             ) {
                return res
                   .status(400)
-                  .json({ alreadyliked: "User already liked this post" });
+                  .json({ alreadyLiked: "User already liked this post" });
             }
 
             // Add user id to likes array
