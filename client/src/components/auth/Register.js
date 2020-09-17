@@ -18,12 +18,19 @@ export const Register = () => {
          [e.target.name]: e.target.value,
       });
 
-   const onSubmit = (e) => {
+   const onSubmit = async (e) => {
       e.preventDefault();
       if (password !== password2) {
          console.log("Password do not match");
       } else {
-         console.log(formData);
+         //  console.log(formData);
+         const newUser = {
+            name,
+            email,
+            password,
+            password2,
+         };
+         console.log("Success");
       }
    };
 
@@ -83,7 +90,7 @@ export const Register = () => {
             <input type="submit" className="btn btn-primary" value="Register" />
          </form>
          <p className="my-1">
-            Already have an account? <Link to="/className">Sign In</Link>
+            Already have an account? <Link to="/login">Sign In</Link>
          </p>
       </Fragment>
    );
