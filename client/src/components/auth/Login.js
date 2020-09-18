@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
+import axios from "axios";
+
 export const Login = () => {
    const [formData, setFormData] = useState({
       email: "",
@@ -19,7 +21,14 @@ export const Login = () => {
    const onSubmit = async (e) => {
       e.preventDefault();
 
-      console.log("Success");
+      let user = {
+         email: "sonu3@gmail.com",
+         password: "123456789",
+      };
+      axios
+         .post("/api/v1/users/login", user)
+         .then((res) => console.log("Register", res))
+         .catch((err) => console.log("Register Error", err));
    };
 
    return (

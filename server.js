@@ -1,11 +1,13 @@
 const express = require("express");
 const db = require("./config/mongoose");
 const passportJWT = require("./config/passport-jwt-strategy");
-
+const cors = require("cors");
 const app = express();
 
 // Connect Database
 db();
+
+app.use(cors());
 
 // Initialized Middleware
 app.use(express.json({ extended: false }));
