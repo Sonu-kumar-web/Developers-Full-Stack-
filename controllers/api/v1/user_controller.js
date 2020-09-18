@@ -36,9 +36,19 @@ module.exports.registerUser = async function (req, res) {
          avatar: gravatar_url,
       });
 
-      return res.status(200).json(newUser);
+      let TokenUser = {
+         id: newUser._id,
+         name: newUser.name,
+         email: newUser.email,
+         avatar: newUser.avatar,
+      };
+
+      let token = await jwt.sign(TokenUser, Keys.secretOrKey, {
+         expiresIn: 360000,
+      });
+      return res.status(200).json({ TokenUser, token, msg: "Success" });
    } catch (error) {
-      console.log(error);
+      console.log("Error", error);
       return res.status(500).json({ msg: "Internal Server Error!" });
    }
 };
@@ -87,7 +97,7 @@ module.exports.loginUser = async function (req, res) {
       let token = await jwt.sign(jwtPayload, Keys.secretOrKey, {
          expiresIn: 360000,
       });
-      return res.status(200).json({ token: "Bearer " + token, msg: "Success" });
+      return res.status(200).json({ token: token, msg: "Success" });
    } catch (error) {
       console.log(error);
       return res.status(500).json({ msg: "Internal Server Error!" });
