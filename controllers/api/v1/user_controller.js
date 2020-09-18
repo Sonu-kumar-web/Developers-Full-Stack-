@@ -92,6 +92,7 @@ module.exports.loginUser = async function (req, res) {
       const jwtPayload = {
          id: foundUser._id,
          name: foundUser.name,
+         email: foundUser.email,
          avatar: foundUser.avatar,
       };
       let token = await jwt.sign(jwtPayload, Keys.secretOrKey, {
