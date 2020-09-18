@@ -19,7 +19,7 @@ module.exports.registerUser = async function (req, res) {
 
       let user = await User.findOne({ email: req.body.email });
       if (user) {
-         errors.email = "Email already exists";
+         errors.message = "Email already exists";
          return res.status(400).json(errors);
       }
 
@@ -70,7 +70,7 @@ module.exports.loginUser = async function (req, res) {
       //Find the user
       var foundUser = await User.findOne({ email });
       if (!foundUser) {
-         errors.email = "User not found";
+         errors.message = "User not found";
          return res.status(404).json(errors);
       }
       console.log(foundUser.password);
@@ -85,7 +85,7 @@ module.exports.loginUser = async function (req, res) {
       }
 
       if (!isMatch) {
-         errors.password = "Password incorrect";
+         errors.message = "Invalid Username/Password";
          return res.status(400).json(errors);
       }
 

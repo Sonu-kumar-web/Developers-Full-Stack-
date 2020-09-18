@@ -8,26 +8,23 @@ import {
    AUTH_ERROR,
    LOGIN_SUCCESS,
    LOGIN_FAIL,
+   LOGOUT,
 } from "./types";
 import { setAlert } from "./alert";
 import setAuthToken from "../utils/setAuthToken";
 
 // Load User
 export const loadUser = (user) => async (dispatch) => {
-   let user;
    if (localStorage.token) {
       setAuthToken(localStorage.token);
-      user = jwt_decode(localStorage.token);
+      let user = jwt_decode(localStorage.token);
       console.log("Decoder", user);
-   }
-   let userData = {
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-   };
-
-   if (userData) {
+      let userData = {
+         _id: user.id,
+         name: user.name,
+         email: user.email,
+         avatar: user.avatar,
+      };
       dispatch({
          type: USER_LOADED,
          payload: userData,
@@ -51,7 +48,7 @@ export const register = ({ name, email, password, password2 }) => async (
          password2,
       };
       let res = await axios.post("/api/v1/users/register", userData);
-      console.log("Register Response", res);
+      // console.log("Register Response", res);
 
       dispatch({
          type: REGISTER_SUCCESS,
@@ -65,8 +62,8 @@ export const register = ({ name, email, password, password2 }) => async (
          dispatch(setAlert(msg, "success"));
       }
    } catch (err) {
-      //   console.log("Error", err.response);
-      const errors = err.response.data.email;
+      // console.log("Login Error", err);
+      const errors = err.response.data.message;
       if (errors) {
          dispatch(setAlert(errors, "danger"));
       }
@@ -99,14 +96,21 @@ export const login = (email, password) => async (dispatch) => {
          dispatch(setAlert(msg, "success"));
       }
    } catch (err) {
-      //   console.log("Error", err.response);
-      const errors = "Invalid Username/Password";
-      if (errors) {
-         dispatch(setAlert(errors, "danger"));
+      // console.log("Error", err.response);
+      // const errors = "Invalid Username/Password";
+      if (err) {
+         dispatch(setAlert(err.response.data.message, "danger"));
       }
 
       dispatch({
          type: LOGIN_FAIL,
       });
    }
+};
+
+// Logout or clear token
+export const logout = () => (dispatch) => {
+   dispatch({
+      type: LOGOUT,
+   });
 };
