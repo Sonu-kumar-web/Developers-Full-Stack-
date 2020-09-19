@@ -36,7 +36,7 @@ module.exports.createProfile = function (req, res) {
    // return res.status(400).json(errors);
    //  }
    // Get fields
-   // console.log("Create Router", req.body);
+   console.log("Create Router", req.body);
    const profileFields = {};
    profileFields.user = req.user.id;
    if (req.body.company) profileFields.company = req.body.company;
@@ -48,9 +48,9 @@ module.exports.createProfile = function (req, res) {
       profileFields.githubusername = req.body.githubusername;
 
    // Skills - Spilt into array
-   if (typeof req.body.skills !== "undefined") {
-      profileFields.skills = req.body.skills.split(",");
-   }
+   // if (typeof req.body.skills !== "undefined") {
+   //    profileFields.skills = req.body.skills.split(",");
+   // }
 
    // Social
    profileFields.social = {};

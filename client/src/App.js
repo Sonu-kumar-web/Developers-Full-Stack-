@@ -15,6 +15,7 @@ import { loadUser } from "./redux/actions/auth";
 import setAuthToken from "./redux/utils/setAuthToken";
 import Dashboard from "./components/dashboard/Dashboard";
 import CreateProfile from "./components/profile-form/CreateProfile";
+import EditProfile from "./components/profile-form/EditProfile";
 
 import PrivateRoute from "./components/routing/PrivateRoute";
 
@@ -54,6 +55,11 @@ const App = () => {
                         exact
                         path="/create-profile"
                         component={CreateProfile}
+                     />
+                     <PrivateRoute
+                        exact
+                        path="/edit-profile"
+                        component={EditProfile}
                      />
                   </Switch>
                </section>
