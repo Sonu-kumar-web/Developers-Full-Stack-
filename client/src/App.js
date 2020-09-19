@@ -14,6 +14,8 @@ import Alert from "./components/layouts/Alert";
 import { loadUser } from "./redux/actions/auth";
 import setAuthToken from "./redux/utils/setAuthToken";
 import Dashboard from "./components/dashboard/Dashboard";
+import CreateProfile from "./components/profile-form/CreateProfile";
+
 import PrivateRoute from "./components/routing/PrivateRoute";
 
 import "./App.css";
@@ -47,6 +49,11 @@ const App = () => {
                         exact
                         path="/dashboard"
                         component={Dashboard}
+                     />
+                     <PrivateRoute
+                        exact
+                        path="/create-profile"
+                        component={CreateProfile}
                      />
                   </Switch>
                </section>
