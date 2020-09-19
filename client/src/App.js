@@ -26,7 +26,7 @@ import store from "./redux/store";
 
 if (localStorage.token) {
    setAuthToken(localStorage.token);
-   console.log("Profile", localStorage.getItem("token"));
+   // console.log("Profile", localStorage.getItem("token"));
 }
 
 const App = () => {

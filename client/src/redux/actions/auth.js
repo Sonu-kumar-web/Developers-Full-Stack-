@@ -19,7 +19,7 @@ export const loadUser = (user) => async (dispatch) => {
    if (localStorage.token) {
       setAuthToken(localStorage.token);
       let user = jwt_decode(localStorage.token);
-      console.log("Decoder", user);
+      // console.log("Decoder", user);
       let userData = {
          _id: user.id,
          name: user.name,

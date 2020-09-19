@@ -10,7 +10,7 @@ router.get(
 );
 
 router.post(
-   "/",
+   "/create-profile",
    passport.authenticate("jwt", { session: false }),
    profileController.createProfile
 );

@@ -10,6 +10,8 @@ const User = require("../../../models/User");
 module.exports.fetchProfile = function (req, res) {
    const errors = {};
 
+   console.log("Fetch profile", req.user);
+
    Profile.findOne({ user: req.user.id })
       .populate("user", ["name", "avatar"])
       .then((profile) => {
@@ -34,9 +36,9 @@ module.exports.createProfile = function (req, res) {
    // return res.status(400).json(errors);
    //  }
    // Get fields
+   // console.log("Create Router", req.body);
    const profileFields = {};
    profileFields.user = req.user.id;
-   if (req.body.handle) profileFields.handle = req.body.handle;
    if (req.body.company) profileFields.company = req.body.company;
    if (req.body.website) profileFields.website = req.body.website;
    if (req.body.location) profileFields.location = req.body.location;
@@ -71,17 +73,9 @@ module.exports.createProfile = function (req, res) {
       } else {
          // Create
 
-         // Check if handle exists
-         Profile.findOne({ handle: profileFields.handle }).then((profile) => {
-            if (profile) {
-               errors.handle = "That handle already exists";
-               return res.status(400).json(errors);
-            }
-
-            // Save Profile
-            new Profile(profileFields).save().then((profile) => {
-               return res.status(200).json(profile);
-            });
+         // Save Profile
+         new Profile(profileFields).save().then((profile) => {
+            return res.status(200).json(profile);
          });
       }
    });
