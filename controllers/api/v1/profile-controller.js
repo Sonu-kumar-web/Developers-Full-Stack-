@@ -101,25 +101,6 @@ module.exports.returnAllProfile = function (req, res) {
       });
 };
 
-// Get profile by handle
-module.exports.getProfileByHandle = function (req, res) {
-   const errors = {};
-
-   Profile.findOne({ handle: req.params.handle })
-      .populate("user", ["name", "avatar"])
-      .then((profile) => {
-         if (!profile) {
-            errors.noprofile = "There is no profile for this user";
-            return res.status(404).json(errors);
-         }
-
-         return res.status(200).json(profile);
-      })
-      .catch((err) => {
-         return res.status(404).json(err);
-      });
-};
-
 // Get profile by user ID
 module.exports.getProfileByUserId = function (req, res) {
    const errors = {};

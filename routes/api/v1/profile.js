@@ -17,9 +17,7 @@ router.post(
 
 router.get("/all", profileController.returnAllProfile);
 
-router.get("/handle/:handle", profileController.getProfileByHandle);
-
-router.get("/user/:user_id", profileController.getProfileByUserId);
+router.get("/:user_id", profileController.getProfileByUserId);
 
 router.post(
    "/experience",
