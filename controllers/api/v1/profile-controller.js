@@ -1,5 +1,6 @@
 const Profile = require("../../../models/Profile");
 const User = require("../../../models/User");
+const Post = require("../../../models/Post");
 
 // Load Validation
 // const validateProfileInput = require("../../../validation/profile
@@ -248,9 +249,14 @@ module.exports.deleteEducation = function (req, res) {
 
 // Delete user and profile
 module.exports.deleteUserAndProfile = function (req, res) {
-   Profile.findOneAndRemove({ user: req.user.id }).then(() => {
-      User.findOneAndRemove({ _id: req.user.id }).then(() => {
-         return res.status(200).json({ success: true });
+   // Remove Posts
+   Post.deleteMany({ user: req.user.id }).then(() => {
+      // Remove Profile
+      Profile.findOneAndRemove({ user: req.user.id }).then(() => {
+         // Remove User
+         User.findOneAndRemove({ _id: req.user.id }).then(() => {
+            return res.status(200).json({ success: true });
+         });
       });
    });
 };

@@ -1,7 +1,14 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 
-import { GET_PROFILE, PROFILE_ERROR, UPDATE_PROFILE } from "./types";
+import {
+   CLEAR_PROFILE,
+   DELETE_ACCOUNT,
+   GET_PROFILE,
+   PROFILE_ERROR,
+   UPDATE_PROFILE,
+   ACCOUNT_DELETED,
+} from "./types";
 
 // Get the current user profile
 export const getCurrentProfile = () => async (dispatch) => {
@@ -107,7 +114,7 @@ export const addEducation = (formData, history) => async (dispatch) => {
 
       history.push("/dashboard");
    } catch (err) {
-      console.log("Profile Creation Error", err.response);
+      // console.log("Profile Creation Error", err.response);
 
       if (err) {
          dispatch(setAlert(err.response.data.message, "danger"));
@@ -116,5 +123,86 @@ export const addEducation = (formData, history) => async (dispatch) => {
          type: PROFILE_ERROR,
          payload: { msg: err.response.statusText, status: err.response.status },
       });
+   }
+};
+
+// Delete experience
+export const deleteExperience = (id) => async (dispatch) => {
+   try {
+      const res = await axios.delete(`/api/v1/profile/experience/${id}`);
+      dispatch({
+         type: UPDATE_PROFILE,
+         payload: res.data,
+      });
+
+      if (res) {
+         dispatch(setAlert("Experience Removed", "success"));
+      }
+   } catch (err) {
+      if (err) {
+         dispatch(setAlert(err.response.data.message, "danger"));
+      }
+      dispatch({
+         type: PROFILE_ERROR,
+         payload: { msg: err.response.statusText, status: err.response.status },
+      });
+   }
+};
+
+// Delete Education
+export const deleteEducation = (id) => async (dispatch) => {
+   try {
+      const res = await axios.delete(`/api/v1/profile/education/${id}`);
+      // console.log("Run deleteEducation");
+      dispatch({
+         type: UPDATE_PROFILE,
+         payload: res.data,
+      });
+
+      if (res) {
+         dispatch(setAlert("Education Removed", "success"));
+      }
+   } catch (err) {
+      if (err) {
+         dispatch(setAlert(err.response.data.message, "danger"));
+      }
+      dispatch({
+         type: PROFILE_ERROR,
+         payload: { msg: err.response.statusText, status: err.response.status },
+      });
+   }
+};
+
+// Delete Account and profile
+export const deleteAccount = () => async (dispatch) => {
+   // It is dangerous task so it is a conformation message
+   if (window.confirm("Are you sure? This can not be undone")) {
+      try {
+         const res = await axios.delete("/api/v1/profile");
+         dispatch({
+            type: CLEAR_PROFILE,
+         });
+
+         dispatch({
+            type: ACCOUNT_DELETED,
+         });
+
+         if (res) {
+            dispatch(
+               setAlert("Your account has been permanently deleted", "danger")
+            );
+         }
+      } catch (err) {
+         if (err) {
+            dispatch(setAlert(err.response.data.message, "danger"));
+         }
+         dispatch({
+            type: PROFILE_ERROR,
+            payload: {
+               msg: err.response.statusText,
+               status: err.response.status,
+            },
+         });
+      }
    }
 };
