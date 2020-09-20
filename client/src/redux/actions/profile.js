@@ -7,7 +7,7 @@ import { GET_PROFILE, PROFILE_ERROR, UPDATE_PROFILE } from "./types";
 export const getCurrentProfile = () => async (dispatch) => {
    try {
       const res = await axios.get("/api/v1/profile/");
-      console.log("Current profile", res);
+      // console.log("Current profile", res);
       dispatch({
          type: GET_PROFILE,
          payload: res.data,
@@ -61,8 +61,9 @@ export const createProfile = (formData, history, edit = false) => async (
 // Add Experience
 export const addExperience = (formData, history) => async (dispatch) => {
    try {
-      let res = axios.post("/api/v1/profile/experience", formData);
-      // console.log("Profile Creation", res);
+      let res = await axios.post("/api/v1/profile/experience", formData);
+      // console.log("AddExp.Form Action", res);
+
       // console.log("Create profile token", localStorage.token);
 
       // console.log("Header", axios.defaults.headers.common["Authorization"]);
@@ -93,7 +94,7 @@ export const addExperience = (formData, history) => async (dispatch) => {
 // Add Education
 export const addEducation = (formData, history) => async (dispatch) => {
    try {
-      let res = axios.post("/api/v1/profile/education", formData);
+      let res = await axios.post("/api/v1/profile/education", formData);
 
       dispatch({
          type: UPDATE_PROFILE,

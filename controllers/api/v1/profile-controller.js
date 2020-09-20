@@ -36,7 +36,7 @@ module.exports.createProfile = function (req, res) {
    // return res.status(400).json(errors);
    //  }
    // Get fields
-   console.log("Create Router", req.body);
+   // console.log("Create Router", req.body);
    const profileFields = {};
    profileFields.user = req.user.id;
    if (req.body.company) profileFields.company = req.body.company;
@@ -165,13 +165,15 @@ module.exports.addExprience = function (req, res) {
       profile.experience.unshift(newExp);
 
       profile.save().then((profile) => {
+         // console.log("Add experience Router", profile);
+
          return res.status(200).json(profile);
       });
    });
 };
 
 // Add education to profile
-module.exports.addEducation = function (req, res) {
+module.exports.addEducation = async function (req, res) {
    //  const { errors, isValid } = validateEducationInput(req.body);
 
    // Check Validation

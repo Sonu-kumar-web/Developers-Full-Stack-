@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addExperience } from "../../redux/actions/profile";
@@ -28,16 +28,13 @@ const AddExperience = ({ addExperience, history }) => {
    } = formData;
 
    const onChange = (e) =>
-      setFormData({
-         ...formData,
-         [e.target.name]: e.target.value,
-      });
+      setFormData({ ...formData, [e.target.name]: e.target.value });
 
    return (
       <Fragment>
          <h1 className="large text-primary">Add An Experience</h1>
          <p className="lead">
-            <i className="fas fa-code-branch"></i> Add any developer/programming
+            <i className="fas fa-code-branch" /> Add any developer/programming
             positions that you have had in the past
          </p>
          <small>* = required field</small>
@@ -45,6 +42,8 @@ const AddExperience = ({ addExperience, history }) => {
             className="form"
             onSubmit={(e) => {
                e.preventDefault();
+               // console.log("AddExp.Form", formData);
+
                addExperience(formData, history);
             }}
          >
@@ -119,7 +118,7 @@ const AddExperience = ({ addExperience, history }) => {
                   placeholder="Job Description"
                   value={description}
                   onChange={(e) => onChange(e)}
-               ></textarea>
+               />
             </div>
             <input type="submit" className="btn btn-primary my-1" />
             <Link className="btn btn-light my-1" to="/dashboard">
