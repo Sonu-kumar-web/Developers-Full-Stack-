@@ -30,12 +30,6 @@ export const Register = ({ setAlert, register, isAuthenticated }) => {
          setAlert("Password do not match", "danger");
       } else {
          //  console.log(formData);
-         const newUser = {
-            name,
-            email,
-            password,
-            password2,
-         };
 
          register({ name, email, password, password2 });
       }

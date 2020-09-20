@@ -49,9 +49,9 @@ module.exports.createProfile = function (req, res) {
       profileFields.githubusername = req.body.githubusername;
 
    // Skills - Spilt into array
-   // if (typeof req.body.skills !== "undefined") {
-   //    profileFields.skills = req.body.skills.split(",");
-   // }
+   profileFields.skills = Array.isArray(req.body.skills)
+      ? req.body.skills
+      : req.body.skills.split(",").map((skill) => " " + skill.trim());
 
    // Social
    profileFields.social = {};

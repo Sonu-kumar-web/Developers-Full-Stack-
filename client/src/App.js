@@ -1,10 +1,5 @@
 import React, { Fragment, useEffect } from "react";
-import {
-   BrowserRouter as Router,
-   Route,
-   Switch,
-   Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Navbar from "./components/layouts/Navbar";
 import Landing from "./components/layouts/Landing";
@@ -15,6 +10,7 @@ import { loadUser } from "./redux/actions/auth";
 import setAuthToken from "./redux/utils/setAuthToken";
 import Dashboard from "./components/dashboard/Dashboard";
 import CreateProfile from "./components/profile-form/CreateProfile";
+import Profiles from "./components/profiles/Profiles";
 import AddExperience from "./components/profile-form/AddExperience";
 import AddEducation from "./components/profile-form/AddEducation";
 
@@ -49,6 +45,8 @@ const App = () => {
                   <Switch>
                      <Route exact path="/register" component={Register} />
                      <Route exact path="/login" component={Login} />
+                     <Route exact path="/profiles" component={Profiles} />
+
                      <PrivateRoute
                         exact
                         path="/dashboard"

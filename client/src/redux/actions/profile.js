@@ -71,7 +71,7 @@ export const createProfile = (formData, history, edit = false) => async (
    dispatch
 ) => {
    try {
-      let res = axios.post("/api/v1/profile/create-profile", formData);
+      let res = await axios.post("/api/v1/profile/create-profile", formData);
       // console.log("Profile Creation", res);
       // console.log("Create profile token", localStorage.token);
 
@@ -92,7 +92,7 @@ export const createProfile = (formData, history, edit = false) => async (
          history.push("/dashboard");
       }
    } catch (err) {
-      console.log("Profile Creation Error", err.response);
+      console.log("Profile Creation Error", err.response.data);
 
       if (err) {
          dispatch(setAlert(err.response.data.message, "danger"));
