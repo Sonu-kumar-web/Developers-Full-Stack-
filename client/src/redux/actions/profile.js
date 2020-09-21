@@ -36,7 +36,7 @@ export const getProfiles = () => async (dispatch) => {
 
    try {
       const res = await axios.get("/api/v1/profile/all");
-      // console.log("Current profile", res);
+      // console.log("Current profile", res.data);
       dispatch({
          type: GET_PROFILES,
          payload: res.data,
