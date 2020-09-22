@@ -11,7 +11,7 @@ const Post = require("../../../models/Post");
 module.exports.fetchProfile = function (req, res) {
    const errors = {};
 
-   console.log("Fetch profile", req.user);
+   // console.log("Fetch profile", req.user);
 
    Profile.findOne({ user: req.user.id })
       .populate("user", ["name", "avatar"])
