@@ -137,8 +137,8 @@ module.exports.addCommentToPost = async function (req, res) {
       const findHandle = await Post.findOne({ user: req.user });
       const newComment = {
          text: req.body.text,
-         name: req.body.name,
-         avatar: req.body.avatar,
+         name: req.user.name,
+         avatar: req.user.avatar,
          user: req.user.id,
          handle: findHandle ? findHandle.handle : "not-found",
       };

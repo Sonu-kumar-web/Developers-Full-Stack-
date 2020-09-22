@@ -103,7 +103,7 @@ export const addPost = (formData) => async (dispatch) => {
 export const getPost = (id) => async (dispatch) => {
    try {
       const res = await axios.get(`/api/v1/posts/${id}`);
-      // console.log("Posts", res.data.name);
+      // console.log("Posts", res.data);
       dispatch({
          type: GET_POST,
          payload: res.data,
@@ -111,7 +111,7 @@ export const getPost = (id) => async (dispatch) => {
    } catch (err) {
       dispatch({
          type: POST_ERROR,
-         payload: { msg: err.response.statusText, status: err.response.status },
+         payload: { msg: err.response, status: err.response },
       });
    }
 };
@@ -120,17 +120,18 @@ export const getPost = (id) => async (dispatch) => {
 export const addComment = (postId, formData) => async (dispatch) => {
    try {
       const res = await axios.post(`/api/v1/posts/comment/${postId}`, formData);
-      // console.log("Posts", res);
+      // console.log("Posts", res.data.comments);
       dispatch({
          type: ADD_COMMENT,
-         payload: res.data,
+         payload: res.data.comments,
       });
 
       dispatch(setAlert("Comment Added", "success"));
    } catch (err) {
+      console.log("Comment error", err);
       dispatch({
          type: POST_ERROR,
-         payload: { msg: err.response.statusText, status: err.response.status },
+         payload: { msg: err.response, status: err.response },
       });
    }
 };
