@@ -37,8 +37,8 @@ module.exports.createPost = async function (req, res) {
       const findHandle = await Profile.findOne({ user: req.user });
       const newPost = await Post.create({
          text: req.body.text,
-         name: req.body.name,
-         avatar: req.body.avatar,
+         name: req.user.name,
+         avatar: req.user.avatar,
          user: req.user.id,
          handle: findHandle ? findHandle.handle : "not-found",
       });
@@ -71,28 +71,24 @@ module.exports.deletePost = (req, res) => {
 };
 
 //  Like post
-module.exports.likePost = (req, res) => {
-   Profile.findOne({ user: req.user.id }).then((profile) => {
-      Post.findById(req.params.id)
-         .then((post) => {
-            if (
-               post.likes.filter((like) => like.user.toString() === req.user.id)
-                  .length > 0
-            ) {
-               return res
-                  .status(400)
-                  .json({ alreadyLiked: "User already liked this post" });
-            }
+module.exports.likePost = async (req, res) => {
+   try {
+      const post = await Post.findById(req.params.id);
 
-            // Add user id to likes array
-            post.likes.unshift({ user: req.user.id });
+      // Check if the post has already been liked
+      if (post.likes.some((like) => like.user.toString() === req.user.id)) {
+         return res.status(400).json({ msg: "Post already liked" });
+      }
 
-            post.save().then((post) => res.json(post));
-         })
-         .catch((err) =>
-            res.status(404).json({ postnotfound: "No post found" })
-         );
-   });
+      post.likes.unshift({ user: req.user.id });
+
+      await post.save();
+
+      return res.json(post.likes);
+   } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+   }
 };
 
 // Unlike post

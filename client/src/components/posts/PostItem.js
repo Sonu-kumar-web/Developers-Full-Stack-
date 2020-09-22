@@ -11,15 +11,12 @@ const PostItem = ({
    removeLike,
    deletePost,
    post: { _id, text, name, avatar, user, likes, comments, date },
+   showActions,
 }) => (
    <div className="post bg-white p-1 my-1">
       <div>
          <Link to={`/profile/${user}`}>
-            <img
-               className="round-img"
-               src="//www.gravatar.com/avatar/dd89d9bd782d7a802c04d00b61d11ef3?s=200&r=pg&d=mm"
-               alt="Profile pic"
-            />
+            <img className="round-img" src={avatar} alt="Profile pic" />
             <h4>{name}</h4>
          </Link>
       </div>
@@ -28,45 +25,55 @@ const PostItem = ({
          <p className="post-date">
             Posted on <Moment format="YYYY/MM/DD">{date}</Moment>
          </p>
-         <button
-            onClick={(e) => {
-               addLike(_id);
-            }}
-            type="button"
-            className="btn btn-light"
-         >
-            <i className="fas fa-thumbs-up"></i>
-            <span>
-               {likes.length > 0 && (
-                  <span className="comment-count">{likes.length}</span>
+
+         {showActions && (
+            <Fragment>
+               <button
+                  onClick={(e) => {
+                     addLike(_id);
+                  }}
+                  type="button"
+                  className="btn btn-light"
+               >
+                  <i className="fas fa-thumbs-up"></i>
+                  <span>
+                     {likes.length > 0 && (
+                        <span className="comment-count">{likes.length}</span>
+                     )}
+                  </span>
+               </button>
+               <button
+                  onClick={(e) => removeLike(_id)}
+                  type="button"
+                  className="btn btn-light"
+               >
+                  <i className="fas fa-thumbs-down"></i>
+               </button>
+               <Link to={`/posts/${_id}`} className="btn btn-primary">
+                  Discussion{" "}
+                  {comments.length > 0 && (
+                     <span className="comment-count">{comments.length}</span>
+                  )}
+               </Link>
+               {!auth.loading && user === auth.user._id && (
+                  <button
+                     onClick={(e) => deletePost(_id)}
+                     type="button"
+                     className="btn btn-danger"
+                  >
+                     <i className="fas fa-times"></i>
+                  </button>
                )}
-            </span>
-         </button>
-         <button
-            onClick={(e) => removeLike(_id)}
-            type="button"
-            className="btn btn-light"
-         >
-            <i className="fas fa-thumbs-down"></i>
-         </button>
-         <Link to={`/post/${_id}`} className="btn btn-primary">
-            Discussion{" "}
-            {comments.length > 0 && (
-               <span className="comment-count">{comments.length}</span>
-            )}
-         </Link>
-         {!auth.loading && user === auth.user._id && (
-            <button
-               onClick={(e) => deletePost(_id)}
-               type="button"
-               className="btn btn-danger"
-            >
-               <i className="fas fa-times"></i>
-            </button>
+            </Fragment>
          )}
       </div>
    </div>
 );
+
+// Set default props
+PostItem.defaultProps = {
+   showActions: true,
+};
 
 PostItem.propTypes = {
    post: PropTypes.object.isRequired,
