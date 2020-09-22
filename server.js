@@ -1,22 +1,19 @@
 const express = require("express");
+const passport = require("passport");
 const db = require("./config/mongoose");
 const path = require("path");
 const passportJWT = require("./config/passport-jwt-strategy");
-const cors = require("cors");
 const app = express();
+const port = process.env.PORT || 5000;
 
 // Connect Database
 db();
 
-app.use(cors());
-
 // Initialized Middleware
 app.use(express.json({ extended: false }));
 
-const port = process.env.PORT || 5000;
-
 // Use express routes
-app.use("/", require("./routes/index.js"));
+app.use("/", require("./routes"));
 
 // Server static assets if in production
 if (process.env.NODE_ENV === "production") {
