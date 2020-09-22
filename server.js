@@ -9,10 +9,15 @@ const port = process.env.PORT || 5000;
 // Connect Database
 db();
 
-// Initialized Middleware
-app.use(express.json({ extended: false }));
+// body parser for req.body
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// Use express routes
+//use passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// use express router
 app.use("/", require("./routes"));
 
 // Server static assets if in production
